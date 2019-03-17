@@ -58,6 +58,30 @@ def process_control_msg(msg):
         assert node_id in subscribers[topic][2], f"{node_id} was not subscribed to {topic}"
 
         subscribers[topic][2].remove(node_id)
+    elif msg[0]=="REQUEST_MAP":
+        log(f"Printing topic map")
+        string="""digraph G {
+        edge [dir=forward, fontsize=8]
+        node [shape=ellipse]
+"""
+        nodes=[]
+        for topic in publishers:
+            for publisher in publishers[topic][2]:
+                if publisher not in nodes:
+                    string+=f'\t{publisher.split(".")[0]} [label="{publisher.split(".")[0]}"]\n'
+                    nodes.append(publisher)
+        for topic in subscribers:
+            for subscriber in subscribers[topic][2]:
+                if subscriber not in nodes:
+                    string+=f't{subscriber.split(".")[0]} [label="{suscriber.split(".")[0]}"]\n'
+                    nodes.append(subscriber)
+        for topic in publishers:
+            for publisher in publishers[topic][2]:
+                for subscriber in subscribers.get(topic, (None,None,[]))[2]:
+                    string+=f'\t{publisher.split(".")[0]} -> {subscriber.split(".")[0]} [label="{topic.lower()}"]\n'
+
+        string+="}"
+        control_socket.send_string(string)
 
 
 import time
