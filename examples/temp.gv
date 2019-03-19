@@ -1,0 +1,13 @@
+digraph G {
+        edge [dir=forward, fontsize=8]
+        node [shape=ellipse]
+	sub1 [label="sub1"]
+	sub2 [label="sub2"]
+	pub1 [label="pub1"]
+	pub2 [label="pub2"]
+	sub1 -> sub2 [label="processed_data"]
+	sub2 -> sub1 [label="commands"]
+	sub2 -> pub1 [label="commands"]
+	pub1 -> sub1 [label="sensor_data"]
+	pub2 -> sub1 [label="sensor_data"]
+}

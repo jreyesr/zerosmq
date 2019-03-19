@@ -10,7 +10,7 @@ permission to publish on a certain topic, and many nodes can subscribe to the sa
 any messages sent by any publisher on that topic. All communications are handled by a "master" node, running on a
 well-known port, which must be running before any other nodes.
 
-For installation instructions, jump [here](#installation). For usage instructions, jump [here](#usage).
+For installation instructions, jump [here](#installation). For usage instructions, jump [here](#usage). If you want to see an example, go [here](#example).
 
 ## Installation
 0. ZeROSMQ has been tested on Python 3.7.1, but it _should_ also
@@ -83,3 +83,12 @@ When a node first requests permission to subscribe to a topic, the master create
 The master spends almost all its time (except when it's attending a request from a node) scanning the control socket for requests and all its open SUB sockets (which correspond to PUB sockets on publisher nodes) for incoming messages. When a message appears on any SUB socket (which corresponds to a certain topic), the message is copied to the matching PUB socket (which corresponds to SUB sockets on subscriber nodes), if such socket exists.
 
 In effect, the master acts as a "post exchange". All messages arrive at the master and are forwarded from there. Queues are handled by ZeroMQ.
+
+The topic graphing code is handled by Graphviz. Graphviz takes files in DOT code (a certain specialized graph-drawing language that describes all nodes, edges and connections between nodes). The DOT source code is generated on-the-fly by the master and sent to the client that requested it (yes, it's horribly hacky, but it appears to work). The client receives the source code and passes it to the `graphviz` library, which accepts raw DOT source code and generates an image from it.
+
+## Example
+There is some example code in the `examples/` directory. The code implements two publisher nodes and two subscriber nodes. The two publisher nodes (`pub1.py` and `pub2.py`) simulate two redundant sensors which measure the same value. Since no actual sensors are present, the values are randomized. Both nodes publish data on topic SENSOR_DATA. The first subscriber node (`sub1.py`) processes the value (it multiplies it by two) and published the "processed data" on topic PROCESSED_DATA. The second subscriber node (`sub2.py`) reads the processed data. If the processed data has a value over 3 (maybe an overrange condition?) it sends back a signal on the topic COMMANDS, which orders nodes to stop data collection. Nodes `pub1.py` and `sub1.py` listen to this order. Node `pub2.py` doesn't listen to it, so it continues generating data after the first publisher has stopped.
+
+When you run `./run.sh` on the `examples/` directory, you will see all nodes subscribing and registering for publication. After that, you will see nodes `pub1.py` and `pub2.py` printing their "sensor data" and sending it to the same topic (SENSOR_DATA). `sub1.py` will print its received data. `sub2.py` will print all received data and, if neccesary, send the stop signal. When the stop signal is sent, `pub1.py` (identified as Sensor A) and `sub1.py` will stop operations. `pub2.py` (identified as Sensor B) will continue generating data, but `sub1.py` will no longer process it.
+
+At any moment, you can call `python ../drawmap.py` from the `examples/` folder to create the topic map. Both the source code and the image are included.
