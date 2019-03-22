@@ -16,7 +16,7 @@ For installation instructions, jump [here](#installation). For usage instruction
 0. ZeROSMQ has been tested on Python 3.7.1, but it _should_ also
 work on Python 3.6 (earlier versions won't work because ZeROSMQ uses [f-strings](https://www.python.org/dev/peps/pep-0498/)).
 1. ZeROSMQ requires [pyzmq](https://github.com/zeromq/pyzmq). If you wish to use [the graphing tool](#graphing-nodes-and-topics), you also need
-to install [graphviz](https://github.com/xflr6/graphviz). It is highly recommended to install [GNU Parallel](https://www.gnu.org/software/parallel/) for sanity-preservation purposes: you can run all nodes with a single shell script, in parallel, get all outputs in the same window, and close them with a single `Ctrl+C`. See [the "Shell script"](#shell-script) section for details on the recommended shell script.
+to install [graphviz](https://github.com/xflr6/graphviz). If you wish to use [the live plotter](#plotting-data), you also need to install [pyqtgraph](http://www.pyqtgraph.org/). It is highly recommended to install [GNU Parallel](https://www.gnu.org/software/parallel/) for sanity-preservation purposes: you can run all nodes with a single shell script, in parallel, get all outputs in the same window, and close them with a single `Ctrl+C`. See [the "Shell script"](#shell-script) section for details on the recommended shell script.
 2. Copy the `zerosmq.py` and `zerosmq-master.py` files to a folder of your choice. If you want to graph the nodes, also copy `drawmap.py`.
 3. Add any nodes that you want to the same folder. See [Usage](#usage) for the code that you should use in the nodes.
 4. Run the master node (`python zerosmq-master.py` or similar) and any other nodes (`python <your-node>.py`). If you have [GNU Parallel and a shell script](#shell-script), execute `./run.sh` instead (assuming your shell script is called `run.sh`).
@@ -49,6 +49,7 @@ If you attempt to call `zerosmq.receive(topic)` before calling `zerosmq.subscrib
 * There is a logging function that uses the tag that you passed to `zerosmq.init()`. To use it, call `zerosmq.log('some message')` from anywhere in your code, after `zerosmq.init()`. This will print the message that you passed, plus a tag at the beginning to help you distinguish it from other nodes' messages.
 * There are `zerosmq.unsubscribe('topic')` and `zerosmq.stop_publishing('topic')` functions, which stop a subscription and publications in a given topic, respectively. (WARNING: Untested! Use at your own risk!)
 * There is a graphing utility which creates an image showing all nodes and their communications. It is described [here](#graphing-nodes-and-topics).
+* There is also a plotting utility which can show a graph of any topic or set of topics, in real time. It is described [here](#plotting-data)
 
 ## Shell script
 If you installed GNU Parallel, you can run all nodes from a single shell script, and get all their outputs on the same console. This saves time and effort, since you would typically have multiple consoles open, one for each node. This route will probably not work if a node needs input or otherwise interacts with the user, but it works fine for the standard "data collection into data processing into data output/logging" workflow that tends to happen in ROS.
@@ -68,6 +69,17 @@ There is an utility that allows you to graph a network of all nodes, plus any to
 1. Run the master node and any other nodes, as usual.
 2. When all nodes are up and running, execute `drawmap.py` (`python drawmap.py` or similar).
 3. The script should generate and create a PNG image with a map of any nodes and the topics that connect them. If you don't see the image, it should be on the same folder, under the name `temp.gv.png`. The file `temp.gv` is the [DOT source](https://graphviz.gitlab.io/_pages/doc/info/lang.html) which generated the image, should you want it.
+
+## Plotting data
+There is an utility which plots any topic or set of topics, in real-time. It is quite similar to (and inspired by) both [rqt_plot](https://wiki.ros.org/rqt_plot) in ROS and the [Arduino IDE serial plotter](https://learn.adafruit.com/experimenters-guide-for-metro/circ08-using%20the%20arduino%20serial%20plotter) (by the way, did _you_ know it?). It is contained in the file `plotdata.py`. To use it:
+0. Ensure that you have the `pyqtgraph` Python module installed.
+1. Open the `plotdata.py` file. You should change the top lines. The variable TIME_SPAN sets the length of the plot (it rolls to the left, and TIME_SPAN sets how much time a specific data point will stay on the graph before disappearing). TOPICS is a list of topics that you want to graph. All topics should _only_ contain a single number to be graphed (say, the temperature or the atmospheric pressure).
+2. Save the `plotdata.py` file.
+3. Run the master node and any other nodes, as usual.
+4. When you wish to start plotting data, execute `plotdata.py` (`python plotdata.py` or similar)
+5. The script should show a window plotting the data in the specified topics. See below for an image. Green is real-time barometer data. Red is the same data, processed by a 15-point rolling average.
+
+![plotter window](docs/plotdata.png)
 
 ## Technical details
 (Skipping this section is heavily recommended. Read at your own risk)
