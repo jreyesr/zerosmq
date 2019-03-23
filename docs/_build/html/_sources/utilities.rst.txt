@@ -21,6 +21,9 @@ ZeROSMQ contains several utilities that help development and data visualization:
   It is described :ref:`here<graphing-nodes>`.
 * There is also a plotting utility which can show a graph of any topic or set of topics, in real time.
   It is described :ref:`here<plotting-data>`.
+* ZeROSMQ can record all data published to it, and replay it later. This allows for simpler debugging, and also
+  aids with data processing, since it can be done after the data is collected. This functionality is described
+  :ref:`here<recording-and-replaying-data>`.
 
 .. toctree::
    :maxdepth: 1
@@ -28,3 +31,4 @@ ZeROSMQ contains several utilities that help development and data visualization:
 
    graphing-nodes
    plotting-data
+   recording-and-replaying-data

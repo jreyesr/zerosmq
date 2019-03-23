@@ -58,6 +58,9 @@ def process_control_msg(msg):
         assert node_id in subscribers[topic][2], f"{node_id} was not subscribed to {topic}"
 
         subscribers[topic][2].remove(node_id)
+    elif msg[0]=="LIST_ALL_TOPICS":
+        log(f"{node_id} requested a list of all topics")
+        control_socket.send_string(",".join(publishers.keys()))
     elif msg[0]=="REQUEST_MAP":
         log(f"Printing topic map")
         string="""digraph G {

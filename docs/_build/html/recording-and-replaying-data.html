@@ -1,0 +1,172 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Recording and replaying data &#8212; ZeROSMQ 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Example code" href="example-code.html" />
+    <link rel="prev" title="Plotting data" href="plotting-data.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="recording-and-replaying-data">
+<span id="id1"></span><h1>Recording and replaying data<a class="headerlink" href="#recording-and-replaying-data" title="Permalink to this headline">¶</a></h1>
+<p>ZeROSMQ contains code to record all published data (or a subset of it) to a file, and allow its playback later, which will produce the same
+effects as when the data was obtained the first time. It is inspired by
+<a class="reference external" href="https://wiki.ros.org/ROS/Tutorials/Recording%20and%20playing%20back%20data">ROS’s bags</a>, and contained in the files
+<code class="docutils literal notranslate"><span class="pre">recordddata.py</span></code> and <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code>.</p>
+<div class="section" id="recording-data">
+<h2>Recording data<a class="headerlink" href="#recording-data" title="Permalink to this headline">¶</a></h2>
+<p>To record data:</p>
+<ol class="arabic simple">
+<li>Open the <code class="docutils literal notranslate"><span class="pre">recorddata.py</span></code> file. The variable TOPICS at the top controls which topics will be recorded (for example,
+if a node subscribes to topic A, processes its data and publishes the processed data on topic B, you may not want to
+record B, since when you play back the data messages of topic B will appear twice, once from the recorded data and
+once from the node’s processing of topic A’s recorded data). If you wish to record all data, leave TOPICS as it is.</li>
+<li>Save the <code class="docutils literal notranslate"><span class="pre">recorddata.py</span></code> file.</li>
+<li>Run the master node and any other nodes, as usual.</li>
+<li>When you wish to start recording data, execute <code class="docutils literal notranslate"><span class="pre">recorddata.py</span></code> (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">recorddata.py</span></code> or similar).</li>
+<li>A file called “RecordData_thecurrentdate.txt” will be created (“thecurrentdate” is the <em>actual</em> current date).</li>
+</ol>
+</div>
+<div class="section" id="replaying-data">
+<h2>Replaying data<a class="headerlink" href="#replaying-data" title="Permalink to this headline">¶</a></h2>
+<p>To replay recorded data:</p>
+<ol class="arabic simple">
+<li>Open the <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code> file and edit the variable RECORDED_FILE, at the top, to contain the filename of the recording
+that you want to play back.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can also set the file name by passing it as a console argument to <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code> (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">replaydata.py</span> <span class="pre">yourfilename.txt</span></code>).
+If you do so, you don’t need to edit <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code>.</p>
+</div>
+<ol class="arabic simple" start="2">
+<li>Save the <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code> file.</li>
+<li>Run the master node and any <strong>data processing</strong> nodes (don’t run data generators).</li>
+</ol>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">When playing back data, ensure that you don’t execute any nodes that publish on any topics that you recorded. If
+you do so, you will get duplicated data. You can only record sensor data (if you are doing a data acquisition project)
+and delay all data processing to the playback stage. Otherwise, you can record all topics (sensor data and processed data),
+but you shouldn’t run the data processors on the playback stage.</p>
+</div>
+<ol class="arabic simple" start="4">
+<li>Run the <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code> file (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">replaydata.py</span></code> or similar).</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">replaydata</span></code> node will scan the file, find all recorded topics, register for publication on all of them and
+publish all saved messages. Any listening nodes will experience the same effect as if the real data generators were publishing.</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ZeROSMQ</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell-script.html">Shell script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-details.html">Technical details</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="utilities.html">Utilities</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graphing-nodes.html">Graphing nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting-data.html">Plotting data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Recording and replaying data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example-code.html">Example code</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="utilities.html">Utilities</a><ul>
+      <li>Previous: <a href="plotting-data.html" title="previous chapter">Plotting data</a></li>
+      <li>Next: <a href="example-code.html" title="next chapter">Example code</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, jreyesr.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/recording-and-replaying-data.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

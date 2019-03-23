@@ -83,3 +83,7 @@ def receive_any():
         if msg:
             return msg
     return None
+
+def get_list_of_topics():
+    control_socket.send_string(f"LIST_ALL_TOPICS {filename} null")
+    return control_socket.recv_string().split(',')
