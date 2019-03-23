@@ -1,0 +1,142 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Plotting data &#8212; ZeROSMQ 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Example code" href="example-code.html" />
+    <link rel="prev" title="Graphing nodes" href="graphing-nodes.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="plotting-data">
+<span id="id1"></span><h1>Plotting data<a class="headerlink" href="#plotting-data" title="Permalink to this headline">¶</a></h1>
+<p>There is an utility which plots any topic or set of topics, in real-time.
+It is quite similar to (and inspired by) both <a class="reference external" href="https://wiki.ros.org/rqt_plot">rqt_plot</a> in ROS
+and the <a class="reference external" href="https://learn.adafruit.com/experimenters-guide-for-metro/circ08-using%20the%20arduino%20serial%20plotter">Arduino IDE serial plotter</a>
+(by the way, did <em>you</em> know it?). It is contained in the file <code class="docutils literal notranslate"><span class="pre">plotdata.py</span></code>. To use it:</p>
+<ol class="arabic simple" start="0">
+<li>Ensure that you have the <code class="docutils literal notranslate"><span class="pre">pyqtgraph</span></code> Python module installed.</li>
+<li>Open the <code class="docutils literal notranslate"><span class="pre">plotdata.py</span></code> file. You should change the top lines.
+The variable TIME_SPAN sets the length of the plot (it rolls to the left, and TIME_SPAN sets
+how much time a specific data point will stay on the graph before disappearing).
+TOPICS is a list of topics that you want to graph. All topics should <em>only</em> contain a single number to be graphed
+(say, the temperature or the atmospheric pressure).</li>
+<li>Save the <code class="docutils literal notranslate"><span class="pre">plotdata.py</span></code> file.</li>
+<li>Run the master node and any other nodes, as usual.</li>
+<li>When you wish to start plotting data, execute <code class="docutils literal notranslate"><span class="pre">plotdata.py</span></code> (<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">plotdata.py</span></code> or similar)</li>
+<li>The script should show a window plotting the data in the specified topics.</li>
+</ol>
+<p>See below for an image. Green is real-time barometer data. Red is the same data, processed by a 15-point rolling average.</p>
+<img alt="_images/plotdata.png" src="_images/plotdata.png" />
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ZeROSMQ</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell-script.html">Shell script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-details.html">Technical details</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="utilities.html">Utilities</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="graphing-nodes.html">Graphing nodes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example-code.html">Example code</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="utilities.html">Utilities</a><ul>
+      <li>Previous: <a href="graphing-nodes.html" title="previous chapter">Graphing nodes</a></li>
+      <li>Next: <a href="example-code.html" title="next chapter">Example code</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, jreyesr.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/plotting-data.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

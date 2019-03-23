@@ -1,0 +1,150 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Technical details &#8212; ZeROSMQ 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utilities" href="utilities.html" />
+    <link rel="prev" title="Shell script" href="shell-script.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="technical-details">
+<h1>Technical details<a class="headerlink" href="#technical-details" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">(Skipping this section is heavily recommended. Read at your own risk)</p>
+</div>
+<p>ZeROSMQ uses ZeroMQ and its implementation of PUB-SUB sockets to build a publisher-subscriber system.
+The master runs a control service on TCP port 5555 by default. Any other nodes connect to it
+and request permission to publish or subscribe to a topic. The master responds by creating dedicated sockets
+for every topic on a random dynamic port, if required, and sending its port number to the requester.</p>
+<p>When a node first requests permission to publish on a certain topic, the master creates a SUB socket
+and sends its port number to the node. The node creates a PUB socket, which allows it to send publications to the node.
+If another node requests permission to publish on the same node, the master reuses the same socket
+(ZeroMQ allows multiple processes to share a socket).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The master expects that no nodes will subscribe to a topic before at least one node has registered
+for publishing on it. If this rule is not respected, bad things may happen.
+This is the reason for the 1-second delay recommended <a class="reference internal" href="registering-and-subscribing.html#registering-for-publications-and-subscribing"><span class="std std-ref">here</span></a>.</p>
+</div>
+<p>When a node first requests permission to subscribe to a topic, the master creates a PUB socket
+and sends its port number to the node. The node creates a SUB socket, which enables it to receive messages.
+The same reusing of sockets happens here.</p>
+<p>The master spends almost all its time (except when it’s attending a request from a node) scanning the control socket
+for requests and all its open SUB sockets (which correspond to PUB sockets on publisher nodes) for incoming messages.
+When a message appears on any SUB socket (which corresponds to a certain topic), the message is copied
+to the matching PUB socket (which corresponds to SUB sockets on subscriber nodes), if such socket exists.</p>
+<p>In effect, the master acts as a “post exchange”. All messages arrive at the master and are forwarded from there.
+Queues are handled by ZeroMQ.</p>
+<p>The topic graphing code is handled by Graphviz. Graphviz takes files in DOT code
+(a certain specialized graph-drawing language that describes all nodes, edges and connections between nodes).
+The DOT source code is generated on-the-fly by the master and sent to the client that requested it
+(yes, it’s horribly hacky, but it appears to work). The client receives the source code
+and passes it to the <code class="docutils literal notranslate"><span class="pre">graphviz</span></code> library, which accepts raw DOT source code and generates an image from it.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ZeROSMQ</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell-script.html">Shell script</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Technical details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-code.html">Example code</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="shell-script.html" title="previous chapter">Shell script</a></li>
+      <li>Next: <a href="utilities.html" title="next chapter">Utilities</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, jreyesr.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/technical-details.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

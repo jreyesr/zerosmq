@@ -1,0 +1,139 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Subscribing &#8212; ZeROSMQ 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Registering for publications and subscribing" href="registering-and-subscribing.html" />
+    <link rel="prev" title="Publishing" href="publishing.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="subscribing">
+<h1>Subscribing<a class="headerlink" href="#subscribing" title="Permalink to this headline">¶</a></h1>
+<p>After a node has subscribed to a topic with <code class="docutils literal notranslate"><span class="pre">zerosmq.subscribe(topic)</span></code>, it can call <code class="docutils literal notranslate"><span class="pre">zerosmq.receive(topic)</span></code>
+to receive one update from that topic, if an update is available. If there are more updates pending,
+you must call <code class="docutils literal notranslate"><span class="pre">zerosmq.receive(topic)</span></code> to get them, one at a time. If there are no updates available for that topic,
+<code class="docutils literal notranslate"><span class="pre">zerosmq.receive(topic)</span></code> will return None, which will signal that there are no messages left at the moment.</p>
+<p>If you want to receive a message from <em>any</em> topic (maybe you just subscribed to a single topic, or you don’t care
+which topic you receive, maybe for a logger) you may use <code class="docutils literal notranslate"><span class="pre">zerosmq.receive_any()</span></code>. This function checks
+all subscribed topics and returns the first message that it finds, if any.
+If none of the subscribed topics have a new message, it returns None.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you attempt to call <code class="docutils literal notranslate"><span class="pre">zerosmq.receive(topic)</span></code> before calling <code class="docutils literal notranslate"><span class="pre">zerosmq.subscribe(topic)</span></code>,
+the node will also stop execution, just as if you attempted to publish before registering.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ZeROSMQ</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="usage.html">Usage</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="initialization.html">Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publishing.html">Publishing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Subscribing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registering-and-subscribing.html">Registering for publications and subscribing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="shell-script.html">Shell script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-details.html">Technical details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example-code.html">Example code</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="usage.html">Usage</a><ul>
+      <li>Previous: <a href="publishing.html" title="previous chapter">Publishing</a></li>
+      <li>Next: <a href="registering-and-subscribing.html" title="next chapter">Registering for publications and subscribing</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, jreyesr.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/subscribing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

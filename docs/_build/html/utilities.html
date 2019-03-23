@@ -1,0 +1,152 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Utilities &#8212; ZeROSMQ 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Graphing nodes" href="graphing-nodes.html" />
+    <link rel="prev" title="Technical details" href="technical-details.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+<p>ZeROSMQ contains several utilities that help development and data visualization:</p>
+<ul class="simple">
+<li>By default, the master runs its control service on port TCP 5555.
+If you don’t want to use it (maybe it’s already taken, or maybe it’s blocked) you can change it:
+in the master, find the call to <code class="docutils literal notranslate"><span class="pre">init()</span></code>, at the end, and override the default port (<code class="docutils literal notranslate"><span class="pre">init(12345)</span></code>, for example).
+This will start the master on your custom port. After that, on all nodes, you need to also override the port
+in the <code class="docutils literal notranslate"><span class="pre">zerosmq.init('TAG')</span></code> call, by changing it to <code class="docutils literal notranslate"><span class="pre">zerosmq.init('TAG',</span> <span class="pre">12345)</span></code>.</li>
+<li>There is a logging function that uses the tag that you passed to <code class="docutils literal notranslate"><span class="pre">zerosmq.init()</span></code>.
+To use it, call <code class="docutils literal notranslate"><span class="pre">zerosmq.log('some</span> <span class="pre">message')</span></code> from anywhere in your code, after <code class="docutils literal notranslate"><span class="pre">zerosmq.init()</span></code>.
+This will print the message that you passed, plus a tag at the beginning to help you distinguish it from other nodes’ messages.</li>
+<li>There are <code class="docutils literal notranslate"><span class="pre">zerosmq.unsubscribe('topic')</span></code> and <code class="docutils literal notranslate"><span class="pre">zerosmq.stop_publishing('topic')</span></code> functions,
+which stop a subscription and publications in a given topic, respectively.</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">These functions are not tested. Use at your own risk.</p>
+</div>
+<ul class="simple">
+<li>There is a graphing utility which creates an image showing all nodes and their communications.
+It is described <a class="reference internal" href="graphing-nodes.html#graphing-nodes"><span class="std std-ref">here</span></a>.</li>
+<li>There is also a plotting utility which can show a graph of any topic or set of topics, in real time.
+It is described <a class="reference internal" href="plotting-data.html#plotting-data"><span class="std std-ref">here</span></a>.</li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="graphing-nodes.html">Graphing nodes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting-data.html">Plotting data</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ZeROSMQ</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell-script.html">Shell script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-details.html">Technical details</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graphing-nodes.html">Graphing nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting-data.html">Plotting data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example-code.html">Example code</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="technical-details.html" title="previous chapter">Technical details</a></li>
+      <li>Next: <a href="graphing-nodes.html" title="next chapter">Graphing nodes</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, jreyesr.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/utilities.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
