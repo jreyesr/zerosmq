@@ -39,7 +39,7 @@
 <p>ZeROSMQ contains code to record all published data (or a subset of it) to a file, and allow its playback later, which will produce the same
 effects as when the data was obtained the first time. It is inspired by
 <a class="reference external" href="https://wiki.ros.org/ROS/Tutorials/Recording%20and%20playing%20back%20data">ROS’s bags</a>, and contained in the files
-<code class="docutils literal notranslate"><span class="pre">recordddata.py</span></code> and <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">recordddata.py</span></code> and <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code>. Furthermore, the speed at which data is replayed can be configured.</p>
 <div class="section" id="recording-data">
 <h2>Recording data<a class="headerlink" href="#recording-data" title="Permalink to this headline">¶</a></h2>
 <p>To record data:</p>
@@ -59,7 +59,9 @@ once from the node’s processing of topic A’s recorded data). If you wish to 
 <p>To replay recorded data:</p>
 <ol class="arabic simple">
 <li>Open the <code class="docutils literal notranslate"><span class="pre">replaydata.py</span></code> file and edit the variable RECORDED_FILE, at the top, to contain the filename of the recording
-that you want to play back.</li>
+that you want to play back. If you want to have faster/slower playback, set the SPEED variable. A value of
+1.0 will cause real-time playback. Higher values will cause faster playback, and slower values will cause slower
+playback. A value of 0 would completely stop playback.</li>
 </ol>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

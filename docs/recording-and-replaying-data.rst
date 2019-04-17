@@ -6,7 +6,7 @@ Recording and replaying data
 ZeROSMQ contains code to record all published data (or a subset of it) to a file, and allow its playback later, which will produce the same
 effects as when the data was obtained the first time. It is inspired by
 `ROS's bags <https://wiki.ros.org/ROS/Tutorials/Recording%20and%20playing%20back%20data>`_, and contained in the files
-``recordddata.py`` and ``replaydata.py``.
+``recordddata.py`` and ``replaydata.py``. Furthermore, the speed at which data is replayed can be configured.
 
 Recording data
 --------------
@@ -28,7 +28,14 @@ Replaying data
 To replay recorded data:
 
 1. Open the ``replaydata.py`` file and edit the variable RECORDED_FILE, at the top, to contain the filename of the recording
-   that you want to play back.
+   that you want to play back. If you want to have faster/slower playback, set the SPEED variable. A value of
+   1.0 will cause real-time playback. Higher values will cause faster playback, and slower values will cause slower
+   playback. A value of 0 would completely stop playback.
+
+.. warning::
+   The maximum speed-up achievable depends on your computer (or so it appears). I haven't been able to obtain a speed-up
+   greater than 2 or so, and at that speed the script spends its entire time sending data, with no pauses. Further speed-ups
+   are desired, so feel free to add them in if you can.
 
 .. note::
    You can also set the file name by passing it as a console argument to ``replaydata.py`` (``python replaydata.py yourfilename.txt``).
